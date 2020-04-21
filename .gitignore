@@ -12,3 +12,6 @@ build
 *.bak
 .idea
 .cache
+env
+sandman2/dbdata.json
+.vscode

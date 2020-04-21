@@ -4,6 +4,50 @@ services automatically from existing databases."""
 
 import argparse
 from sandman2 import get_app
+import tkinter as tk
+from tkinter import filedialog
+import os
+import json
+
+current_path = os.path.dirname(os.path.realpath(__file__))
+
+def browse_file_path(title_text="Choose File"):
+    root = tk.Tk()
+    root.withdraw()
+    file_path = filedialog.askopenfilename(filetypes =(("json files", "*.json"),("All Files","*.*")),
+                           title = title_text)
+    return file_path
+
+
+def copy_file_to(copyto,replace_file = False,title_text = 'Choose File'):
+    already_exist = os.path.exists(copyto)
+    if already_exist and not replace_file:
+        print("File already exists")
+    else:
+        c_driver = browse_file_path(title_text=title_text)
+        cdriver = None
+        with open(c_driver,'rb') as f:
+            cdriver = f.read()
+        with open(copyto,'wb') as f:
+            f.write(cdriver)
+        print(f'copied {c_driver} to {copyto}')
+
+copy_file_to(current_path +r'\dbdata.json')
+
+def pgconnstring():
+    connstring = None
+    dbdata_file = os.path.join(current_path,'dbdata.json')
+    with open(dbdata_file,'r',encoding='utf-8') as f:
+        jobj = json.load(f)[0]
+        user = jobj['user']
+        password = jobj['password']
+        host = jobj['host']
+        dbname = jobj['dbname']
+        connstring = f'postgresql+psycopg2://{user}:{password}@{host}/{dbname}'
+    return connstring
+
+
+
 
 
 def main():
@@ -12,16 +56,22 @@ def main():
         description='Auto-generate a RESTful API service '
         'from an existing database.'
         )
-    parser.add_argument(
-        'URI',
-        help='Database URI in the format '
-             'postgresql+psycopg2://user:password@host/database')
+
+    #uri here
+    URI = pgconnstring()
+
+    # parser.add_argument(
+    #     'URI',
+    #     help='Database URI in the format '
+    #          'postgresql+psycopg2://user:password@host/database')
+    
     parser.add_argument(
         '-d',
         '--debug',
         help='Turn on debug logging',
         action='store_true',
         default=False)
+
     parser.add_argument(
         '-p',
         '--port',
@@ -54,11 +104,11 @@ def main():
 
 
     args = parser.parse_args()
-    app = get_app(args.URI, read_only=args.read_only, schema=args.schema)
+    app = get_app(URI, read_only=args.read_only, schema=args.schema)
     if args.enable_cors:
         from flask_cors import CORS
         CORS(app)
-     if args.debug:
+    if args.debug:
         app.config['DEBUG'] = True
     if args.local_only:
         host = '127.0.0.1'

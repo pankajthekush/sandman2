@@ -12,3 +12,5 @@ class CustomAdminView(ModelView):  # pylint: disable=no-init
     create_template = 'create.html'
     edit_template = 'edit.html'
     column_display_pk = True
+    ModelView.can_export = True
+    ModelView.can_delete = False
