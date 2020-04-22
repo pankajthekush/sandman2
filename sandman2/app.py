@@ -197,16 +197,14 @@ def register_model(cls, admin=None):
         ModelView.can_set_page_size = True
         ModelView.can_create = False
 
-        mldview.page_size = 500
+        ModelView.page_size = 500
         ModelView.column_filters = columns
         
         ModelView.column_searchable_list = columns
         ModelView.column_editable_list = columns
         #admin.add_view(CustomAdminView(model=cls,session=db.session))
-        try:
-            admin.add_view(ModelView(model=cls,session=db.session))
-        except Exception as e:
-            print(e)
+        admin.add_view(ModelView(model=cls,session=db.session))
+
         ModelView.column_editable_list = columns
         
   
