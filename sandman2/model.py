@@ -18,7 +18,7 @@ class Model(object):
     There is a one-to-one mapping between a table in the database and a
     :class:`sandman2.model.Model`.
     """
-
+    
     #: The relative URL this resource should live at.
     __url__ = None
 

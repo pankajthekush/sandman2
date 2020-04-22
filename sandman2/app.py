@@ -3,6 +3,8 @@
 # Third-party imports
 from flask import Flask, current_app, jsonify
 from sqlalchemy.sql import sqltypes
+from flask_admin.contrib.sqla import ModelView
+
 
 # Application imports
 from sandman2.exception import (
@@ -17,7 +19,7 @@ from sandman2.exception import (
     )
 from sandman2.service import Service
 from sandman2.model import db, Model, AutomapModel
-from sandman2.admin import CustomAdminView
+#from sandman2.admin import CustomAdminView
 from flask_admin import Admin
 from flask_httpauth import HTTPBasicAuth
 
@@ -67,6 +69,7 @@ def get_app(
             routes[cls.__model__.__name__] = '{}{{/{}}}'.format(
                 cls.__model__.__url__,
                 cls.__model__.primary_key())
+
         return jsonify(routes)
     return app
 
@@ -154,7 +157,7 @@ def register_model(cls, admin=None):
 
     # inspect primary key
     cols = list(cls().__table__.primary_key.columns)
-
+    
     # composite keys not supported (yet)
     primary_key_type = 'string'
     if len(cols) == 1:
@@ -169,8 +172,30 @@ def register_model(cls, admin=None):
 
     # registration
     register_service(service_class, primary_key_type)
+    
     if admin is not None:
-        admin.add_view(CustomAdminView(cls, db.session))
+
+        columns =  [col.name.lower() for col in  list(cls().__table__.columns) if not col.primary_key  ]
+      
+
+        ModelView.list_template = 'list.html'
+        ModelView.create_template = 'create.html'
+        ModelView.edit_template = 'edit.html'
+        ModelView.column_display_pk = True
+        ModelView.can_export = True
+        ModelView.can_delete = False
+        ModelView.can_view_details = True
+        ModelView.can_set_page_size = True
+        ModelView.can_create = False
+        #mldview.page_size = 500
+        ModelView.column_filters = columns
+        ModelView.column_editable_list = columns
+        ModelView.column_searchable_list = columns
+    
+        #admin.add_view(CustomAdminView(model=cls,session=db.session))
+        admin.add_view(ModelView(model=cls,session=db.session))
+        #CustomAdminView(cls, db.session)
+       
 
 
 def _register_user_models(user_models, admin=None, schema=None):
@@ -185,3 +210,4 @@ def _register_user_models(user_models, admin=None, schema=None):
 
     for user_model in user_models:
         register_model(user_model, admin)
+
