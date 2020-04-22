@@ -4,7 +4,7 @@
 from flask import Flask, current_app, jsonify
 from sqlalchemy.sql import sqltypes
 from flask_admin.contrib.sqla import ModelView
-
+from sandman2.shelp import config_file
 
 # Application imports
 from sandman2.exception import (
@@ -134,12 +134,23 @@ def _reflect_all(exclude_tables=None, admin=None, read_only=False, schema=None):
     """
     AutomapModel.prepare(  # pylint:disable=maybe-no-member
         db.engine, reflect=True, schema=schema)
+    
+    
+    to_load_tables = config_file()
+    
     for cls in AutomapModel.classes:
+        #input(cls.__table__.name)
         if exclude_tables and cls.__table__.name in exclude_tables:
             continue
+        #Load only specific table
+        elif cls.__table__.name in to_load_tables:
+            register_model(cls, admin)
         if read_only:
             cls.__methods__ = {'GET'}
-        register_model(cls, admin)
+            input('readonly')
+        
+        
+
 
 
 def register_model(cls, admin=None):
@@ -176,8 +187,6 @@ def register_model(cls, admin=None):
     if admin is not None:
 
         columns =  [col.name.lower() for col in  list(cls().__table__.columns) if not col.primary_key  ]
-      
-
         ModelView.list_template = 'list.html'
         ModelView.create_template = 'create.html'
         ModelView.edit_template = 'edit.html'
@@ -187,13 +196,20 @@ def register_model(cls, admin=None):
         ModelView.can_view_details = True
         ModelView.can_set_page_size = True
         ModelView.can_create = False
-        #mldview.page_size = 500
+
+        mldview.page_size = 500
         ModelView.column_filters = columns
-        ModelView.column_editable_list = columns
+        
         ModelView.column_searchable_list = columns
-    
+        ModelView.column_editable_list = columns
         #admin.add_view(CustomAdminView(model=cls,session=db.session))
-        admin.add_view(ModelView(model=cls,session=db.session))
+        try:
+            admin.add_view(ModelView(model=cls,session=db.session))
+        except Exception as e:
+            print(e)
+        ModelView.column_editable_list = columns
+        
+  
         #CustomAdminView(cls, db.session)
        
 
