@@ -20,6 +20,7 @@ def browse_file_path(title_text="Choose File"):
 
 
 def copy_file_to(copyto,replace_file = False,title_text = 'Choose File'):
+
     already_exist = os.path.exists(copyto)
     if already_exist and not replace_file:
         print("File already exists")
@@ -32,7 +33,7 @@ def copy_file_to(copyto,replace_file = False,title_text = 'Choose File'):
             f.write(cdriver)
         print(f'copied {c_driver} to {copyto}')
 
-copy_file_to(current_path +r'\dbdata.json')
+copy_file_to(os.path.join(current_path ,'dbdata.json'))
 
 def pgconnstring():
     connstring = None
