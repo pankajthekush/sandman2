@@ -187,6 +187,7 @@ def register_model(cls, admin=None):
     if admin is not None:
 
         columns =  [col.name.lower() for col in  list(cls().__table__.columns) if not col.primary_key  ]
+    
         ModelView.list_template = 'list.html'
         ModelView.create_template = 'create.html'
         ModelView.edit_template = 'edit.html'
@@ -205,7 +206,10 @@ def register_model(cls, admin=None):
         #admin.add_view(CustomAdminView(model=cls,session=db.session))
         admin.add_view(ModelView(model=cls,session=db.session))
 
-        ModelView.column_editable_list = columns
+        if 'remarks' in columns:
+            ModelView.column_editable_list = ['remarks']
+        else:
+            pass
         
   
         #CustomAdminView(cls, db.session)
