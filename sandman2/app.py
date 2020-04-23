@@ -197,12 +197,10 @@ def register_model(cls, admin=None):
         ModelView.can_view_details = True
         ModelView.can_set_page_size = True
         ModelView.can_create = False
-
         ModelView.page_size = 500
         ModelView.column_filters = columns
-        
         ModelView.column_searchable_list = columns
-        ModelView.column_editable_list = columns
+       
         #admin.add_view(CustomAdminView(model=cls,session=db.session))
         admin.add_view(ModelView(model=cls,session=db.session))
 
