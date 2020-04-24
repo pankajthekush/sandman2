@@ -147,7 +147,6 @@ def _reflect_all(exclude_tables=None, admin=None, read_only=False, schema=None):
             register_model(cls, admin)
         if read_only:
             cls.__methods__ = {'GET'}
-            input('readonly')
         
         
 
@@ -187,27 +186,39 @@ def register_model(cls, admin=None):
     if admin is not None:
 
         columns =  [col.name.lower() for col in  list(cls().__table__.columns) if not col.primary_key  ]
-    
+        dict_txt =  {'readonly': True }
+        dict_readonly = dict()
+
+        for cdata in columns:
+            if cdata != 'remarks':
+                dict_readonly[cdata] = dict_txt
+        
+        ModelView.form_widget_args = dict_readonly
         ModelView.list_template = 'list.html'
         ModelView.create_template = 'create.html'
         ModelView.edit_template = 'edit.html'
-        ModelView.column_display_pk = True
+        ModelView.column_display_pk = False
         ModelView.can_export = True
         ModelView.can_delete = False
         ModelView.can_view_details = True
         ModelView.can_set_page_size = True
         ModelView.can_create = False
-        ModelView.page_size = 500
+        ModelView.page_size = 200
         ModelView.column_filters = columns
         ModelView.column_searchable_list = columns
-       
-        #admin.add_view(CustomAdminView(model=cls,session=db.session))
-        admin.add_view(ModelView(model=cls,session=db.session))
+        ModelView.can_edit = False
+        #make it readonly
+        
 
         if 'remarks' in columns:
             ModelView.column_editable_list = ['remarks']
         else:
             pass
+
+        #admin.add_view(CustomAdminView(model=cls,session=db.session))
+        admin.add_view(ModelView(model=cls,session=db.session))
+
+        
         
   
         #CustomAdminView(cls, db.session)
