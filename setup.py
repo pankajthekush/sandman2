@@ -36,7 +36,7 @@ class PyTest(TestCommand):
 
 setup(
     name='sandman2',
-    version='1.2.3',
+    version='1.2.4',
     url='http://github.com/jeffknupp/sandman2/',
     license='Apache Software License',
     author='Jeff Knupp',
@@ -62,7 +62,10 @@ setup(
     platforms='any',
     test_suite='tests.test_sandman2',
     zip_safe=False,
-    package_data={'sandman2': ['templates/**.html','templates/admin/**.html']},
+    package_data={'sandman2': ['templates/**.html',
+                                'templates/admin/**.html',
+                                 'static/**.js',
+                                 'static/styles/**.css']},
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',

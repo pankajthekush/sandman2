@@ -1,5 +1,5 @@
 .cell {
-
+ 
   max-width: 50px; /* tweak me please */
   white-space : nowrap;
   overflow : hidden;
@@ -11,9 +11,10 @@
   text-overflow: ellipsis;
 } */
 
-/* .expand-maximum-on-hover:hover {
-  max-width : initial; 
-} */
+.expand-maximum-on-hover:hover {
+  max-width : initial;
+  white-space :normal
+}
 .container {
 	padding-right: 15px;
 	padding-left: 15px;
