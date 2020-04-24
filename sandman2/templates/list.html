@@ -5,8 +5,14 @@
     {{ lib.form_css() }}
 {% endblock %}
 
+
+
+
 {% block body %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='resizable.js')}}"></script>
+
+
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
     {% block model_menu_bar %}
     <ul class="nav nav-tabs actions-nav">
@@ -63,8 +69,8 @@
     {% endif %}
 
     {% block model_list_table %}
-    <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover model-list">
+    <div style="resize:both" class="table-responsive">
+    <table class="table table-striped table-bordered table-hover model-list table-resizable">
         <thead>
             <tr>
                 {% block list_header scoped %}
@@ -158,6 +164,8 @@
         </tr>
         {% endfor %}
     </table>
+   
+
     </div>
     {% block list_pager %}
     {% if num_pages is not none %}
@@ -185,8 +193,10 @@
       <div id="active-filters-data" style="display:none;">{{ active_filters|tojson|safe }}</div>
     {% endif %}
 
+   
     {{ lib.form_js() }}
     <script src="{{ admin_static.url(filename='admin/js/filters.js', v='1.0.0') }}"></script>
+    
 
     {{ actionlib.script(_gettext('Please select at least one record.'),
                         actions,

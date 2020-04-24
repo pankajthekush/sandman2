@@ -1,14 +1,56 @@
 .cell {
+
   max-width: 50px; /* tweak me please */
   white-space : nowrap;
   overflow : hidden;
+
 }
 
-.expand-small-on-hover:hover {
+/* .expand-small-on-hover:hover {
   max-width : 200px; 
   text-overflow: ellipsis;
+} */
+
+/* .expand-maximum-on-hover:hover {
+  max-width : initial; 
+} */
+.container {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+  margin-left: 0px;
+  width: 100%;
 }
 
-.expand-maximum-on-hover:hover {
-  max-width : initial; 
+/* table resizing */
+.table-resizable {
+	&.resizing {
+		cursor: col-resize;
+		user-select: none;
+	}
+	
+	th {
+		position: relative;
+		&::before {
+			@extend .table-resizable.resizing;
+			content: '';
+			display: block;
+			height: 100%;
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 1em;
+		}
+
+		&:last-of-type::before {
+			display: none;
+		}
+	}
+
+	td {
+		/* max-width: 0; */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
