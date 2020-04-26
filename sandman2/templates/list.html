@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="{{url_for('static', filename='resizable.js')}}"></script>    
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
-   
+    <script src="{{url_for('static', filename='fixheader.js')}}"></script>   
 
     {% block model_menu_bar %}
     <ul class="nav nav-tabs actions-nav">
@@ -69,8 +69,10 @@
         <div class="clearfix"></div>
     {% endif %}
 
+
     {% block model_list_table %}
-    <div style="resize:both;height: 500px;width: 100%;" class="table-responsive">
+
+            <!-- main table -->
             <table id="table" style="table-layout: fixed;" class="table table-striped table-bordered table-hover model-list table-resizable">
          
             <thead >
@@ -119,7 +121,7 @@
                     {% endblock %}
                 </tr>
             </thead>
-
+        <tbody>
         {% for row in data %}
         <tr>
             {% block list_row scoped %}
@@ -170,9 +172,10 @@
             </td>
         </tr>
         {% endfor %}
-            </table>
+    </tbody>
+        </table>
 
-    </div>
+    
     {% block list_pager %}
     {% if num_pages is not none %}
     {{ lib.pager(page, num_pages, pager_url) }}

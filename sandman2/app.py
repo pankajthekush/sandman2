@@ -207,9 +207,17 @@ def register_model(cls, admin=None):
         ModelView.column_filters = columns
         ModelView.column_searchable_list = columns
         ModelView.can_edit = False
-        #make it readonly
-        
 
+        #put remarks column in second
+        # columns.remove('remarks')
+        # columns.insert(0,'remarks')
+
+
+
+        ModelView.column_list = columns
+        #make it readonly
+
+        
         if 'remarks' in columns:
             ModelView.column_editable_list = ['remarks']
         else:
