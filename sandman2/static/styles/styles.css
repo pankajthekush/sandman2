@@ -39,6 +39,7 @@ table {
   background-color: #aaa;
   overflow: hidden;
   border-collapse: collapse;
+ 
 }
 
 thead {
@@ -70,8 +71,9 @@ tbody {
   position: relative;
   display: block; /*seperates the tbody from the header*/
   width: 100%;
-  height: 500px;
+  height: 440px;
   overflow: scroll;
+  
 }
 
 tbody td {
@@ -85,4 +87,20 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
   display: block; /*seperates the first column from the tbody*/
   height: 40px;
   background-color: #99a;
+}
+
+
+/* remove markgin  */
+.h1, .h2, .h3, h1, h2, h3 {
+	margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: small;
+  font-weight: bold;
+}
+
+
+.table {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 0px;
 }

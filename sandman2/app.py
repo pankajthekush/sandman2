@@ -197,6 +197,7 @@ def register_model(cls, admin=None):
         ModelView.list_template = 'list.html'
         ModelView.create_template = 'create.html'
         ModelView.edit_template = 'edit.html'
+        ModelView.details_template = 'details.html'
         ModelView.column_display_pk = False
         ModelView.can_export = True
         ModelView.can_delete = False
@@ -206,7 +207,7 @@ def register_model(cls, admin=None):
         ModelView.page_size = 200
         ModelView.column_filters = columns
         ModelView.column_searchable_list = columns
-        ModelView.can_edit = False
+        ModelView.can_edit = True
 
         #put remarks column in second
         # columns.remove('remarks')

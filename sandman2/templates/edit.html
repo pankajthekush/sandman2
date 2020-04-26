@@ -1,16 +1,74 @@
 {% extends 'admin/model/edit.html' %}
 
-{% block brand %}
-    <h2 id="brand">Edit {{ admin_view.name|capitalize }}</h2>
-    <div class="clearfix"></div>
-    <hr>
+
+{% block head %}
+  {{ super() }}
+  {{ lib.form_css() }}
 {% endblock %}
 
 {% block body %}
-  {% call lib.form_tag(form) %}
-      {{ lib.render_form_fields(form, form_opts=form_opts) }}
-      <div class="form-buttons">
-        {{ lib.render_form_buttons(return_url) }}
-      </div>
-  {% endcall %}
+
+
+
+<script>
+  function ready() {
+    var all_text =  document.getElementsByTagName("textarea")
+    var all_input = document.getElementsByTagName("input")
+    
+    // diaable all text areas
+    for (let item of all_text) {
+        if (item.id !== 'remarks') {
+          item.disabled = true
+  
+        }else{
+          item.disabled = false
+        }
+    }
+
+  // disable all input box
+  for (let item of all_input) {
+        if ((item.className === 'form-control') ) {
+  
+          item.disabled = true
+        }else{
+          item.disabled = false
+        }
+    }
+
+  }
+
+  document.addEventListener("DOMContentLoaded", ready);
+</script>
+
+
+
+  {% block navlinks %}
+  <ul class="nav nav-tabs">
+    <li>
+        <a href="{{ return_url }}">{{ _gettext('List') }}</a>
+    </li>
+    {%- if admin_view.can_create -%}
+    <li>
+        <a href="{{ get_url('.create_view', url=return_url) }}">{{ _gettext('Create') }}</a>
+    </li>
+    {%- endif -%}
+    <li class="active">
+        <a href="javascript:void(0)">{{ _gettext('Edit') }}</a>
+    </li>
+    {%- if admin_view.can_view_details -%}
+    <li>
+        <a href="{{ get_url('.details_view', id=request.args.get('id'), url=return_url) }}">{{ _gettext('Details') }}</a>
+    </li>
+    {%- endif -%}
+  </ul>
+  {% endblock %}
+
+  {% block edit_form %}
+    {{ lib.render_form(form, return_url, extra(), form_opts) }}
+  {% endblock %}
+{% endblock %}
+
+{% block tail %}
+  {{ super() }}
+  {{ lib.form_js() }}
 {% endblock %}
