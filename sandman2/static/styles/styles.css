@@ -29,3 +29,10 @@
 
 
 /* fixed header */
+.col-md-2{
+  display: none;
+}
+
+.col-md-10{
+  width: 100%;
+}

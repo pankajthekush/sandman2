@@ -71,7 +71,7 @@ def main():
         '--debug',
         help='Turn on debug logging',
         action='store_true',
-        default=False)
+        default=True)
 
     parser.add_argument(
         '-p',
