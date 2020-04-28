@@ -19,7 +19,7 @@ from sandman2.exception import (
     )
 from sandman2.service import Service
 from sandman2.model import db, Model, AutomapModel
-#from sandman2.admin import CustomAdminView
+from sandman2.admin import CustomAdminView
 from flask_admin import Admin
 from flask_httpauth import HTTPBasicAuth
 
@@ -186,53 +186,14 @@ def register_model(cls, admin=None):
     if admin is not None:
 
         columns =  [col.name.lower() for col in  list(cls().__table__.columns) if not col.primary_key  ]
-        dict_txt =  {'readonly': True }
-        dict_readonly = dict()
-
-        for cdata in columns:
-            if cdata != 'remarks':
-                dict_readonly[cdata] = dict_txt
-        
-        ModelView.form_widget_args = dict_readonly
-        ModelView.list_template = 'list.html'
-        ModelView.create_template = 'create.html'
-        ModelView.edit_template = 'edit.html'
-        ModelView.details_template = 'details.html'
-        ModelView.column_display_pk = False
-        ModelView.can_export = True
-        ModelView.can_delete = False
-        ModelView.can_view_details = True
-        ModelView.can_set_page_size = True
-        ModelView.can_create = False
-        ModelView.page_size = 200
         ModelView.column_filters = columns
         ModelView.column_searchable_list = columns
-        ModelView.can_edit = True
-
-        #put remarks column in second
-        # columns.remove('remarks')
-        # columns.insert(0,'remarks')
-
-
-
         ModelView.column_list = columns
-        #make it readonly
-
-        
-        if 'remarks' in columns:
-            ModelView.column_editable_list = ['remarks']
-        else:
-            pass
-
-        #admin.add_view(CustomAdminView(model=cls,session=db.session))
-        admin.add_view(ModelView(model=cls,session=db.session))
-
-        
+  
+        admin.add_view(CustomAdminView(model=cls,session=db.session))
+  
         
   
-        #CustomAdminView(cls, db.session)
-       
-
 
 def _register_user_models(user_models, admin=None, schema=None):
     """Register any user-defined models with the API Service.
