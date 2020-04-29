@@ -10,11 +10,11 @@
   max-width : 200px;
   text-overflow: ellipsis;
 } */
-
+/* 
 .expand-maximum-on-hover:hover {
-  max-width : initial;
+  max-width : 3000px;
   white-space :normal
-}
+} */
 
 
 .container {
@@ -61,10 +61,13 @@ thead th {
 
 }
 
+/* change the size of first header */
 thead th:nth-child(1) {/*first cell in the header*/
   position: relative;
   display: block; /*seperates the first cell in the header from the header*/
   background-color: #88b;
+  min-width: 80px;
+  max-width: 80px;
 }
 
 tbody {
@@ -82,11 +85,15 @@ tbody td {
   border: 1px solid #222;
 }
 
+
+/* change the siz of first columns cell*/
 tbody tr td:nth-child(1) {  /*the first cell in each tr*/
   position: relative;
   display: block; /*seperates the first column from the tbody*/
   height: 40px;
   background-color: #99a;
+  min-width: 80px;
+  max-width: 80px;
 }
 
 
